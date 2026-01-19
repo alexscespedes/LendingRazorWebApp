@@ -8,6 +8,9 @@
 
   <ItemGroup>
     <Folder Include="Enums/" />
+    <Folder Include="Pages/Customers/" />
+    <Folder Include="Pages/Loans/" />
+    <Folder Include="Pages/Payments/" />
   </ItemGroup>
 
 </Project>
