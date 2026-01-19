@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace MyApp.Namespace
+namespace LendingRazorWeb.Pages.Customers
 {
     public class DeleteModel : PageModel
     {
