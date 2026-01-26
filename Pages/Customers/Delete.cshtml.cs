@@ -40,9 +40,16 @@ namespace LendingRazorWeb.Pages.Customers
          public async Task<IActionResult> OnPostAsync(int? id)
         {
             var httpClient = CreateClient();
+            var token = HttpContext.Session.GetString("JWTToken");
 
             if (id == null)
                 return NotFound();
+
+            if (!string.IsNullOrEmpty(token))
+            {
+                httpClient.DefaultRequestHeaders.Authorization =
+                    new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            }
 
             var httpResponseMessage = await httpClient.DeleteAsync($"Customers/{id}");
 
