@@ -11,6 +11,11 @@
     <Folder Include="Pages/Customers/" />
     <Folder Include="Pages/Loans/" />
     <Folder Include="Pages/Payments/" />
+    <Folder Include="Pages/User/" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Net.Http.Json" Version="10.0.2" />
   </ItemGroup>
 
 </Project>

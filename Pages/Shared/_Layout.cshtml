@@ -32,6 +32,26 @@
                             <a class="nav-link text-dark" asp-area="" asp-page="/Payments/Index">Payments</a>
                         </li>
                     </ul>
+                    <ul class="navbar-nav">
+                        @if (!string.IsNullOrEmpty(Context.Session.GetString("Username")))
+                        {
+                            <li class="nav-item">
+                                <span class="nav-link text-dark">Welcome, @Context.Session.GetString("Username")</span>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/User/Logout">Logout</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/User/Register">Register</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/User/Login">Login</a>
+                            </li>
+                        }
+                    </ul>
                 </div>
             </div>
         </nav>

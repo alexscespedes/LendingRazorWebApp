@@ -1,0 +1,35 @@
+﻿@page
+@model LendingRazorWeb.Pages.User.LoginModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div style="max-width: 400px; margin: 50px auto;">
+    <h2>Login</h2>
+
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <div style="color: red; margin-bottom: 10px;">@Model.ErrorMessage</div>
+    }
+
+    <form method="post">
+        <div style="margin-bottom: 15px;">
+            <label>Username:</label>
+            <input type="text" asp-for="Input.Username" style="width: 100%; padding: 8px;" required />
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            <label>Password:</label>
+            <input type="password" asp-for="Input.Password" style="width: 100%; padding: 8px" required />
+        </div>
+
+        <button type="submit" style="padding: 10px 20px; background: #28a745; color: white: border: none; cursor: pointer;">
+            Login
+        </button>
+    </form>
+
+    <p style="margin-top: 15px;">
+        Don't have an account? <a asp-page="Register">Register here</a>
+    </p>
+    
+</div>
