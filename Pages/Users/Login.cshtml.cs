@@ -2,7 +2,7 @@ using LendingRazorWeb.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace LendingRazorWeb.Pages.User
+namespace LendingRazorWeb.Pages.Users
 {
     public class LoginModel : PageModel
     {
