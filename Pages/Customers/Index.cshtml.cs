@@ -16,11 +16,9 @@ namespace LendingRazorWeb.Pages.Customers
         }
 
         public IEnumerable<Customer>? CustomersList { get; set; }
-        private HttpClient CreateClient() => _httpClientFactory.CreateClient("LendingWebApi");
-
         public async Task<IActionResult> OnGetAsync()
         {
-            var httpClient = CreateClient();
+            var httpClient = _httpClientFactory.CreateClient("LendingWebApi");
             var httpResponseMessage = await httpClient.GetAsync($"Customers");
 
             if (!httpResponseMessage.IsSuccessStatusCode)

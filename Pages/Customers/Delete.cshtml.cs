@@ -33,7 +33,6 @@ namespace LendingRazorWeb.Pages.Customers
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
             Customer = await JsonSerializer.DeserializeAsync<Customer>(contentStream, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-            Console.WriteLine("Go to delete page!");
             return Page();
         }
 

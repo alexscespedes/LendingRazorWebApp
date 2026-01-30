@@ -15,12 +15,11 @@ namespace LendingRazorWeb.Pages.Customers
             _httpClientFactory = httpClientFactory;
         }
 
-        public Customer? Customer {get; set; }
-        private HttpClient CreateClient() => _httpClientFactory.CreateClient("LendingWebApi");
-
+        public Customer? Customer { get; set; }
+        
         public async Task<IActionResult> OnGetAsync(int id)
         {
-            var httpClient = CreateClient();
+            var httpClient = _httpClientFactory.CreateClient("LendingWebApi");
             var httpResponseMessage = await httpClient.GetAsync($"Customers/{id}");
 
             if (httpResponseMessage.StatusCode == HttpStatusCode.NotFound)

@@ -17,7 +17,6 @@ namespace LendingRazorWeb.Pages.Customers
 
         [BindProperty]
         public Customer? Customer { get; set; }
-        private HttpClient CreateClient() => _httpClientFactory.CreateClient("LendingWebApi");
 
         public async Task<IActionResult> OnPostAsync()
         {
@@ -26,7 +25,7 @@ namespace LendingRazorWeb.Pages.Customers
 
             var customer = new StringContent(JsonSerializer.Serialize(Customer), Encoding.UTF8, "application/json");
 
-            var httpClient = CreateClient();
+            var httpClient = _httpClientFactory.CreateClient("LendingWebApi");
             var httpResponseMessage = await httpClient.PostAsync("Customers", customer);
 
             if (httpResponseMessage.IsSuccessStatusCode)
