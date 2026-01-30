@@ -39,16 +39,16 @@
                                 <span class="nav-link text-dark">Welcome, @Context.Session.GetString("Username")</span>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/User/Logout">Logout</a>
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Users/Logout">Logout</a>
                             </li>
                         }
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/User/Register">Register</a>
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Users/Register">Register</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/User/Login">Login</a>
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Users/Login">Login</a>
                             </li>
                         }
                     </ul>
