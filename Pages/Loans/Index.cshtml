@@ -1,4 +1,43 @@
 ﻿@page
 @model LendingRazorWeb.Pages.Loans.IndexModel
 @{
+    ViewData["Title"] = "Index";
 }
+
+<h2>Loans</h2>
+
+<p>
+    <a asp-page="./Create" class="btn btn-primary">Create New Loan</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Customer</th>
+            <th>Principal Amount</th>
+            <th>Interest Rate</th>
+            <th>Terms (Month)</th>
+            <th>Start Date</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var loan in Model.LoansList!)
+        {
+            <tr>
+                <td>@loan.Customer?.FirstName @loan.Customer?.LastName</td>
+                <td>@loan.PrincipalAmount.ToString("C")</td>
+                <td>@loan.InterestRate%</td>
+                <td>@loan.TermsMonth</td>
+                <td>@loan.StartDate.ToString("yyyy-MM-dd")</td>
+                <td>@loan.LoanStatus</td>
+                <td>
+                    <a asp-page="Edit" asp-route-id="@loan.Id">Edit</a> |
+                    <a asp-page="Detail" asp-route-id="@loan.Id">Detail</a> |
+                    <a asp-page="Delete" asp-route-id="@loan.Id">Delete</a> |
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

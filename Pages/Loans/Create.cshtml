@@ -1,4 +1,71 @@
 ﻿@page
+@using LendingRazorWeb.Enums
 @model LendingRazorWeb.Pages.Loans.CreateModel
 @{
+    ViewData["Title"] = "Create Loan";
 }
+
+<h2>Create Loan</h2>
+
+<h4>Loan</h4>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Loan.CustomerId" class="form-label"></label>
+                <select asp-for="Loan.CustomerId" class="form-select" asp-items="Model.CustomerList">
+                    <option value="">--- Select Customer ---</option>
+                </select>
+                <span asp-validation-for="Loan.CustomerId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Loan.PrincipalAmount" class="form-label"></label>
+                <input asp-for="Loan.PrincipalAmount" class="form-control">
+                <span asp-validation-for="Loan.PrincipalAmount" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Loan.InterestRate" class="form-label"></label>
+                <input asp-for="Loan.InterestRate" class="form-control" >
+                <span asp-validation-for="Loan.InterestRate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Loan.TermsMonth" class="form-label"></label>
+                <input asp-for="Loan.TermsMonth" class="form-control">
+                <span asp-validation-for="Loan.TermsMonth" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Loan.StartDate" class="form-label"></label>
+                <input asp-for="Loan.StartDate" class="form-control" type="date">
+                <span asp-validation-for="Loan.StartDate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Loan.LoanStatus" class="form-label"></label>
+                <select asp-for="Loan.LoanStatus" class="form-select" asp-items="Html.GetEnumSelectList<LoanStatus>()">
+                    <option value="">--- Select Status ---</option>
+                </select>
+                <span asp-validation-for="Loan.LoanStatus" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Loan.UserId" class="form-label"></label>
+                <input asp-for="Loan.UserId" class="form-control">
+                <span asp-validation-for="Loan.UserId" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+                <a asp-page="Index" class="btn btn-secondary">Back to List</a>
+            </div>
+
+        </form>
+
+    </div>
+</div>
