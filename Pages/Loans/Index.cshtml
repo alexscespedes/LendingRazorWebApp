@@ -26,7 +26,7 @@
         @foreach (var loan in Model.LoansList!)
         {
             <tr>
-                <td>@loan.Customer?.FirstName @loan.Customer?.LastName</td>
+                <td>@loan.Customer?.FullName</td>
                 <td>@loan.PrincipalAmount.ToString("C")</td>
                 <td>@loan.InterestRate%</td>
                 <td>@loan.TermsMonth</td>
