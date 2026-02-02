@@ -1,4 +1,33 @@
 ﻿@page
 @model LendingRazorWeb.Pages.Payments.DetailModel
 @{
+    ViewData["Title"] = "Payments Details";
 }
+
+<h2>Payments Details</h2>
+
+<div>
+    <h4>Payment</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-3">Loan</dt>
+        <dd class="col-sm-9">@Model.Payment?.LoanId </dd>
+        
+        <dt class="col-sm-3">Customer</dt>
+        <dd class="col-sm-9">@Model.Payment?.Loan?.Customer?.FullName</dd>
+
+        <dt class="col-sm-3">Amount</dt>
+        <dd class="col-sm-9">@Model.Payment?.Amount.ToString("C")</dd>
+
+        <dt class="col-sm-3">Payment Date</dt>
+        <dd class="col-sm-9">@Model.Payment?.PaymentDate.ToString("yyyy-MM-dd")</dd>
+
+        <dt class="col-sm-3">User</dt>
+        <dd class="col-sm-9">@Model.Payment?.User?.Username</dd>
+    </dl>
+</div>
+
+<div>
+    <a asp-page="Edit" asp-route-id="@Model.Payment?.Id" class="btn btn-primary">Edit</a>
+    <a asp-page="Index" class="btn btn-secondary">Back to List</a>
+</div>

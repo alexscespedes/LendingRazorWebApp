@@ -1,4 +1,58 @@
 ﻿@page
 @model LendingRazorWeb.Pages.Payments.IndexModel
 @{
+    ViewData["Title"] = "Payments";
 }
+
+<h2>Payments</h2>
+
+<p>
+    <a asp-page="./Create" class="btn btn-primary">Create New Loan</a>
+    <a asp-page="./Import" class="btn btn-success">Import Payments</a>
+    <a asp-page="./Export" class="btn btn-info">Export Payments</a>
+</p>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Loan</th>
+            <th>Customer</th>
+            <th>Amount</th>
+            <th>Payment Date</th>
+            <th>User</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var payment in Model.PaymentsList!)
+        {
+            <tr>
+                <td>Loan #@payment.LoanId</td>
+                <td>@payment.Loan?.Customer?.FullName</td>
+                <td>@payment.Amount.ToString("C")</td>
+                <td>@payment.PaymentDate.ToString("yyyy-MM-dd")</td>
+                <td>@payment.User?.Username</td>
+                <td>
+                    <a asp-page="Detail" asp-route-id="@payment.Id">Detail</a> |
+                    <a asp-page="Delete" asp-route-id="@payment.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,4 +1,48 @@
 ﻿@page
 @model LendingRazorWeb.Pages.Payments.CreateModel
 @{
+    ViewData["Title"] = "Create Payment";
 }
+
+<h2>Create Payment</h2>
+
+<h4>Payment</h4>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Payment.LoanId" class="form-label"></label>
+                <select asp-for="Payment.LoanId" class="form-select" asp-items="Model.CustomerList">
+                    <option value="">-- Select Loan --</option>
+                </select>
+                <span asp-validation-for="Payment.LoanId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Payment.Amount" class="form-label"></label>
+                <input asp-for="Payment.Amount" class="form-control" />
+                <span asp-validation-for="Payment.Amount" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Payment.PaymentDate" class="form-label"></label>
+                <input asp-for="Payment.PaymentDate" class="form-control" type="date"/>
+                <span asp-validation-for="Payment.PaymentDate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Payment.UserId" class="form-label"></label>
+                <input asp-for="Payment.UserId" class="form-control" />
+                <span asp-validation-for="Payment.UserId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+                <a asp-page="Index" class="btn btn-secondary">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>
