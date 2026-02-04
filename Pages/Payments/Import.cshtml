@@ -1,0 +1,121 @@
+﻿@page
+@model LendingRazorWeb.Pages.Payments.ImportModel
+@{
+    ViewData["Title"] = "Import Payments";
+}
+
+<h2>Import Payments</h2>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Upload CSV File</h5>
+                <p class="card-text">Upload a CSV file containing payment data. The file should include the following columns:</p>
+                <ul>
+                    <li>LoanId</li>
+                    <li>Amount</li>
+                    <li>PaymentDate (yyyy-MM-dd format)</li>
+                    <li>UserId</li>
+                </ul>
+
+                <form method="post" enctype="multipart/form-data" id="importForm">
+                    <div class="mb-3">
+                        <label for="file" class="form-label">Select CSV File</label>
+                        <input class="form-control" type="file" id="file" name="file" accept=".csv" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <button type="submit" class="btn btn-primary" id="uploadBtn">
+                            <span id="uploadText">Upload and Import</span>
+                            <span id="uploadSpinner" class="spinner-border spinner-border-sm d-none" role="status"></span>
+                        </button>
+                        <a asp-page="Index" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </form>
+
+                <div id="progessSection" class="d-none">
+                    <div class="progress mb-2">
+                        <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated"
+                        role="progressbar" style="width: 0%"></div>
+                    </div>
+                    <p id="progressText" class="text-muted">Processing...</p>
+                </div>
+            </div>
+        </div>
+
+        @if (Model.ImportResult != null) {
+            <div class="card mt-3">
+                <div class="card-body">
+                    <h5 class="card-title">Import Results</h5>
+
+                    @if (Model.ImportResult.FailedRecords == 0) 
+                    {
+                        <div class="alert alert-success">
+                            <h6>Import Successful!</h6>
+                            <p class="mb-0">Successfully imported <strong>@Model.ImportResult.SuccessfulRecords</strong> payment(s).</p>
+                            <p class="mb-0 mt-1"><small>Total rows processed: @Model.ImportResult.TotalRecords</small></p>
+                        </div>
+                    }
+                    else 
+                    {
+                        <div class="alert alert-warning">
+                            <h6>Import Completed with Errors</h6>
+                            <p>Successfully imported: <strong>@Model.ImportResult.SuccessfulRecords</strong></p>
+                            <p>Failed: <strong>@Model.ImportResult.FailedRecords</strong></p>
+                            <p class="mb-0"><small>Total rows processed: @Model.ImportResult.TotalRecords</small></p>
+                        </div>
+                    }
+
+                    @if (Model.ImportResult.Errors.Any())
+                    {
+                        <div class="mt-3">
+                            <h6>Errors:</h6>
+                            <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Row</th>
+                                            <th>Field</th>
+                                            <th>Error</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var error in Model.ImportResult.Errors)
+                                        {
+                                            <tr>
+                                                <td>@error.RowNumber</td>
+                                                <td>@(error.FieldName ?? "-")</td>
+                                                <td>@error.ErrorMessage</td>
+                                            </tr>
+                                        }
+
+                                        <div class="mt-3">
+                                            <a asp-page="Index" class="btn btn-primary">View All Payments</a>
+                                        </div>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById('importForm').addEventListener('submit', function(e) {
+            const uploadBtn = document.getElementById('uploadBtn');
+            const uploadText = document.getElementById('uploadText');
+            const uploadSpinner = document.getElementById('uploadSpinner');
+            const progessSection = document.getElementById('progressSection');
+
+            uploadBtn.disabled = true;
+            uploadText.textContent = 'Uploading...'
+            uploadSpinner.classList.remove('d-none');
+            progressSection.classList.remove('d-none');
+        });
+    </script>
+}
