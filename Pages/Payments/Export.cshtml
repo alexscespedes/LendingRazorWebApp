@@ -1,0 +1,170 @@
+﻿@page
+@model LendingRazorWeb.Pages.Payments.ExportModel
+@{
+    ViewData["Title"] = "Export Payments";
+}
+
+<h2>Export Payments</h2>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Export Filters</h5>
+                <form method="post" id="exportForm">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label asp-for="Filter.StartDate" class="form-label">Start Date</label>
+                                <input asp-for="Filter.StartDate" class="form-control" type="date" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label asp-for="Filter.EndDate" class="form-label">End Date</label>
+                                <input asp-for="Filter.EndDate" class="form-control" type="date" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label asp-for="Filter.MinAmount" class="form-label">Minimun Amount</label>
+                                <input asp-for="Filter.MinAmount" class="form-control" type="number" step="0.01" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label asp-for="Filter.MaxAmount" class="form-label">Maximun Amount</label>
+                                <input asp-for="Filter.MaxAmount" class="form-control" type="number" step="0.01" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label asp-for="Filter.LoanId" class="form-label">Loan ID (Optional)</label>
+                                <input asp-for="Filter.LoanId" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label asp-for="Filter.UserId" class="form-label">User ID (Optional)</label>
+                                <input asp-for="Filter.UserId" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Filter.CustomerIds" class="form-label">Customer IDs (Optional, comma-separated)</label>
+                        <input asp-for="CustomerIdsInput" class="form-control" placeholder="e.g., 1,2,3"/>
+                        <small class="form text text-muted">Enter multiple customer IDs separated by commas</small>
+                            </div>
+
+                    <div class="mb-3">
+                        <button type="button" class="btn btn-info" onclick="getExportCount()">
+                            <i class="bi bi-calculator"></i> Get Record Count
+                        </button>
+                        <span id="recordCount" class="ms-2 text-muted"></span>
+                    </div>
+
+                    <hr />
+
+                    <div class="mb-3">
+                        <h6>Export Options</h6>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="exportType" id="normalExport" value="normal" checked>
+                            <label class="form-check-label" for="streamingExport">
+                                Normal Export (Best for smaller datasets)
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="exportType" id="streamingExport" value="streaming">
+                            <label class="form-check-label" for="streamingExport">
+                                streaming Export (Best for large datasets)
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <button type="submit" class="btn btn-primary" id="exportBtn">
+                            <i class="bi bi-download"></i> Export to CSV
+                        </button>
+                        <a asp-page="Index" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </form>
+
+                <div id="exportProgress" class="d-none mt-3">
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-stripped progress-bar-animated"
+                            role="progressbar" style="width: 100%">
+                            Preparing export...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const API_BASE_URL = 'http://localhost:5175/api';
+
+        async function getExportCount() {
+            const form = document.getElementById('exportForm');
+            const formData = new FormData(form);
+
+            const customerIdsInput = formData.get('customerIdsInput');
+            const customerIds = customerIdsInput ? customerIdsInput.split(',').map(id => parseInt(id.trim())).filter(id => !isNaN(id)) : null;
+
+            const filter = {
+                startDate: formData.get('Filter.StartDate') || null,
+                endDate: formData.get('Filter.EndDate') || null,
+                minAmount: formData.get('Filter.MinAmount') ? parseFloat(formData.get('Filter.MinAmount')) : null,
+                maxAmount: formData.get('Filter.MaxAmount') ? parseFloat(formData.get('Filter.MaxAmount')) : null,
+                loanId: formData.get('Filter.LoanId') ? parseInt(formData.get('Filter.LoanId')) : null,
+                userId: formData.get('Filter.UserId') ? parseInt(formData.get('Filter.UserId')) : null,
+                customerIds: customerIds
+            };
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/PaymentExport/export/count`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(filter)
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    document.getElementById('recordCount').textContent =
+                       `Found ${data.count} record(s) matching your criteria`; 
+                } else {
+                    document.getElementById('recordCount').textContent = 'Error getting count';
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('recordCount').textContent = 'Error getting count';
+            }
+        }
+
+        document.getElementById('exportForm').addEventListener('submit', function(e) {
+            const exportBtn = document.getElementById('exportBtn');
+            const exportProgress = document.getElementById('exportProgress');
+
+            exportProgress.classList.remove('d-none');
+            exportBtn.disabled = true;
+
+            setTimeout(function() {
+                exportProgress.classList.add('d-none');
+                exportBtn.disabled = false;
+            }, 3000);
+        });
+    </script>
+}
